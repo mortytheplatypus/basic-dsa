@@ -1,7 +1,37 @@
 #include <iostream>
-#include "linked-list-utils.h"
+#include <cstdlib>
 
 using namespace std;
+
+typedef struct node_t {
+    int data;
+    struct node_t* next;
+} Node;
+
+Node* create_new_node(int data) {
+    Node* new_node = (Node*)malloc(sizeof(Node));
+    
+    if (new_node == nullptr) {
+        cout << "Memory allocation failed!\n";
+        return nullptr;
+    }
+
+    new_node->data = data;
+    new_node->next = nullptr;
+
+    return new_node;
+}
+
+void print_linked_list(Node* root) {
+    Node* node = root;
+
+    while (node != nullptr) {
+        cout << node->data << " ";
+        node = node->next;
+    }
+
+    cout << endl;
+}
 
 void append(Node** pointer_to_root, int data) {
     // 1. create a new node
@@ -119,7 +149,11 @@ void delete_node(Node** pointer_to_root, int data) {
         if (node->next->data == data) {
             Node* del_node = node->next;
 
-            node->next = node->next->next;
+            if (node->next) {
+                node->next = node->next->next;
+            } else {
+                node->next = nullptr;
+            }
 
             free(del_node);
             del_node = nullptr;
