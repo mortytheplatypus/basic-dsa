@@ -1,4 +1,4 @@
-#include "utils.h"
+#include <iostream>
 
 void take_array_input(int arr[], int size) {
     for(int i = 0; i < size; ++i) {
@@ -12,4 +12,3 @@ void print_array(const int arr[], int size) {
     }
     std::cout << std::endl;
 }
-
