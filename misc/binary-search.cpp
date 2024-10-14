@@ -21,6 +21,22 @@ int binary_search(int arr[], int n, int target) {
     return -1;
 }
 
+int binary_search_rec(int arr[], int left, int right, int target) {
+    if (left > right) {
+        return -1;
+    }
+
+    int mid = (right + left) / 2;
+
+    if (arr[mid] > target) {
+        return binary_search_rec(arr, left, mid - 1, target);
+    } else if (arr[mid] < target) {
+        return binary_search_rec(arr, mid + 1, right, target);
+    } else {
+        return mid;
+    }
+}
+
 int main() {
     int n; cin >> n;
     int arr[n];
@@ -37,6 +53,14 @@ int main() {
         cout << target << " is not found in the array\n";
     } else {
         cout << target << " is found at index " << index << endl;
+    }
+
+    int index_rec = binary_search_rec(arr, 0, n - 1, target);
+
+    if (index_rec == -1) {
+        cout << target << " is not found in the array\n";
+    } else {
+        cout << target << " is found at index " << index_rec << endl;
     }
 
     return 0;
