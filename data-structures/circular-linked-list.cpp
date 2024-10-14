@@ -156,32 +156,22 @@ void delete_node(Node** pointer_to_root, int data) {
         return;
     }
 
-    // 3. else, traverse to the node to be deleted
-    
-    do {
-        if (node->data == data) {
-            break;
+    // 3. else, traverse to the node to be deleted 
+    while (node->next != *pointer_to_root) {
+        if (node->next->data == data) {
+            Node* del_node = node->next;
+
+            node->prev->next = node->next;
+            node->next->prev = node->prev;
+
+            free(del_node);
+            del_node = nullptr;
+
+            cout << "Deleted " << data << " from the linked list\n";
         }
 
         node = node->next;
-    } while (node != *pointer_to_root);
-
-    // 4. if the node is not found
-    if (node == *pointer_to_root) {
-        cout << data << " is not found in the linked list\n";
-        return;
     }
-
-    // 5. delete the node
-    Node* del_node = node;
-
-    node->prev->next = node->next;
-    node->next->prev = node->prev;
-
-    free(del_node);
-    del_node = nullptr;
-
-    cout << "Deleted " << data << " from the linked list\n";
 
     return;
 }

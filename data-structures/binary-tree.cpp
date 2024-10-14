@@ -82,6 +82,21 @@ void add_left_child(Node* root, int parent_data, int data) {
     }
 }
 
+void add_left_child_rec(Node* root, int parent_data, int data) {
+
+    if (root == nullptr) {
+        return;
+    }
+    
+    if (root->data == parent_data) {
+        root->left = create_new_node(data);
+        return;
+    }
+
+    add_left_child_rec(root->left, parent_data, data);
+    add_left_child_rec(root->right, parent_data, data);
+}
+
 void add_right_child(Node* root, int parent_data, int data) {
     Node* new_node = create_new_node(data);
 
@@ -105,6 +120,37 @@ void add_right_child(Node* root, int parent_data, int data) {
             return;
         }
     }
+}
+
+void add_right_child_rec(Node* root, int parent_data, int data) {
+
+    if (root == nullptr) {
+        return;
+    }
+    
+    if (root->data == parent_data) {
+        root->right = create_new_node(data);
+        return;
+    }
+
+    add_right_child_rec(root->left, parent_data, data);
+    add_right_child_rec(root->right, parent_data, data);
+}
+
+bool check_if_exists(Node* root, int data) {
+
+    if (root == nullptr) {
+        return false;
+    }
+
+    if (root->data == data) {
+        return true;
+    }
+
+    bool isOnLeft = check_if_exists(root->left, data);
+    bool isOnRight = check_if_exists(root->right, data);
+
+    return isOnLeft || isOnRight;
 }
 
 int main() {

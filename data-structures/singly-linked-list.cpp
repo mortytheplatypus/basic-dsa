@@ -60,7 +60,7 @@ void append(Node** pointer_to_root, int data) {
 
     node->next = new_node;
 
-    cout << "Appended " << data << " to the linked list\n";
+    cout << data << " is appended to the linked list\n";
 
     return;
 
@@ -74,13 +74,24 @@ void prepend(Node** pointer_to_root, int data) {
         return;
     }
 
-    // 2. Point the next of the new root to the current root
-    new_node->next = *pointer_to_root;
+    // 2. if the linked list is empty, make the new node the root
+    if (*pointer_to_root == nullptr) {
+        *pointer_to_root = new_node;
 
-    // 3. Make the new node the root
+        cout << data << " is the new root of the linked list\n";
+
+        return;
+    }
+
+    // 3. else, prepend the new node
+
+    Node* node = *pointer_to_root;
+
+    new_node->next = node;
+
     *pointer_to_root = new_node;
 
-    cout << data << " is the new root of the linked list\n";
+    cout << data << " is prepended to the linked list\n";
 
     return;
 }

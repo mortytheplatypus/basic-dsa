@@ -80,7 +80,7 @@ void prepend(Node** pointer_to_root, int data) {
     if (*pointer_to_root == nullptr) {
         *pointer_to_root = new_node;
 
-        cout << data << " is the root of the linked list\n";
+        cout << data << " is the new root of the linked list\n";
 
         return;
     }
@@ -118,28 +118,24 @@ void insert_after(Node** pointer_to_root, int data, int new_data) {
     // 3. traverse to the node to insert after
     while (node) {
         if (node->data == data) {
-            break;
+            new_node->next = node->next;
+            new_node->prev = node;
+            node->next = new_node;
+
+            if (new_node->next) {
+                new_node->next->prev = new_node;
+            }
+
+            cout << "Inserted " << new_data << " after " << data << " in the linked list\n";
+
+            return;
         }
 
         node = node->next;
     }
 
     // 4. if the node is not found
-    if (node == nullptr) {
-        cout << data << " is not found in the linked list\n";
-        return;
-    }
-
-    // 5. insert the new node after the node
-    new_node->next = node->next;
-    new_node->prev = node;
-    node->next = new_node;
-
-    if (new_node->next) {
-        new_node->next->prev = new_node;
-    }
-
-    cout << new_data << " is inserted after " << data << " in the linked list\n";
+    cout << data << " is not found in the linked list\n";
 
     return;
 }
@@ -171,12 +167,12 @@ void delete_node(Node** pointer_to_root, int data) {
     }
 
     // 3. else, traverse to the node to be deleted
-    
     while (node->next) {
         if (node->next->data == data) {
             Node* del_node = node->next;
 
             if (node->next) {
+                node->next->next->prev = node;
                 node->next = node->next->next;
             } else {
                 node->next = nullptr;
