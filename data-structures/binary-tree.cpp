@@ -25,8 +25,6 @@ Node* create_new_node(int data) {
     return new_node;
 }
 
-// implement the inorder, preorder, and postorder traversal
-
 void preorder(Node* root) {
     if (root == nullptr) {
         return;
