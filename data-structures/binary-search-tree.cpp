@@ -66,9 +66,9 @@ Node* insert_element(Node* root, int data) {
     }
 }
 
-void search_element(Node* root, int data) {
+bool search_element(Node* root, int data) {
     if (root == nullptr) {
-        return;
+        return false;
     }
 
     if (data < root->data) {
@@ -76,7 +76,7 @@ void search_element(Node* root, int data) {
     } else if (data > root->data) {
         search_element(root->right, data);
     } else {
-        cout << "Found " << data << "\n";
+        return true;
     } 
 }
 
