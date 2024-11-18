@@ -1,6 +1,7 @@
 #include <iostream>
 #include <cstdlib>
 #include <vector>
+#include <stack>
 #include <string>
 using namespace std;
 
@@ -116,6 +117,32 @@ class BST {
         return 0;
     }
 
+    void keys_util(Node* node, string low, string high, vector<string>& result) {
+        if (node == nullptr) {
+            return;
+        }
+
+        if (node->data < low || node->data > high) {
+            return;
+        }
+
+        keys_util(node->left, low, high, result);
+        result.push_back(node->data);
+        keys_util(node->right, low, high, result);
+    }
+        
+    int size_util(Node* node, string low, string high) {
+        if (node == nullptr) {
+            return 0;
+        }
+
+        if (node->data < low || node->data > high) {
+            return 0;
+        }
+
+        return 1 + size_util(node->left, low, high) + size_util(node->right, low, high);
+    }
+
 public:
     BST() {
         root = nullptr;
@@ -178,6 +205,39 @@ public:
         return rank_util(root, data);
     }
 
+    vector<string> keys(string low, string high) {
+        vector<string> result;
+        keys_util(root, low, high, result);
+        return result;
+    }
+
+    int size(string low, string high) {
+        return size_util(root, low, high);
+    }
+
+    vector<string> keys_nonrec(string low, string high) {
+        vector<string> result;
+        stack<Node*> s;
+
+        Node* node = root;
+
+        while (node || !s.empty()) {
+            while (node && low <= node->data && node->data <= high) {
+                s.push(node);
+                node = node->left;
+            }
+
+            node = s.top();
+            s.pop();
+
+            result.push_back(node->data);
+
+            node = node->right;
+        }
+
+        return result;
+    }
+
 };
 
 
@@ -208,6 +268,53 @@ int main() {
     cout << "rank(M): " << bst.rank("M") << endl;
     cout << "rank(C): " << bst.rank("C") << endl;
     cout << "rank(Z): " << bst.rank("Z") << endl;
+    cout << endl;
+    vector<string> keys_result = bst.keys("D", "T");
+    for (string key : keys_result) {
+        cout << key << " ";
+    }
+    cout << endl;
+    vector<string> keys_result_nonrec = bst.keys_nonrec("D", "T");
+    for (string key : keys_result_nonrec) {
+        cout << key << " ";
+    }
+    cout << endl;
+    cout << bst.size("D", "T");
 
     return 0;
 }
+
+/*
+    lg(N!) ~ Nlg(N)
+
+    lg(N!) = lg(1 * 2 * 3 * ... * N)
+           = lg(1) + lg(2) + lg(3) + ... + lg(N)
+           < lg(N) + lg(N) + lg(N) + ... + lg(N)
+           = Nlg(N)
+
+    lg(N!) ~ Nlg(N)
+
+    ABC
+    ACB
+    BAC
+    BCA
+    CAB
+    CBA
+
+
+                *
+               /  \
+              *    *
+             / \ / \
+            *  * *  *
+
+                      *
+                     /
+                    *
+                   /
+                  *
+                 /
+                *
+               /
+              *
+*/
