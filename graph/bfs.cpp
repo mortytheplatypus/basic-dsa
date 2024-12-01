@@ -1,33 +1,78 @@
-#include <bits/stdc++.h>
-#include "graph.h"
+#include <iostream>
+#include <vector>
+#include <queue>
 using namespace std;
 
-void bfs(Graph, int);
+const char* INPUT_FILE = "input.txt";
+
+class Graph {
+    int vertices;
+    vector<vector<int>> adjacency_list;
+
+public:
+
+    Graph(int);
+    void add_edge(int, int);
+    void print_graph();
+
+    void bfs(int);
+};
 
 int main() {
-    char filename[] = "input.txt";
+    freopen(INPUT_FILE, "r", stdin);
     
-    Graph graph = create_new_graph(filename);
+    int vertices, edges;
+    cin >> vertices >> edges;
+
+    Graph graph(vertices);
+
+    for (int i = 0; i < edges; i++) {
+        int u, v; 
+        cin >> u >> v;
+
+        graph.add_edge(u, v);
+    }
+
     graph.print_graph();
 
-    int vertices = graph.get_vertices();
+    int vertex;
+    cin >> vertex;
 
-    for (int vertex = 0; vertex < vertices; vertex++) {
-        vector<bool> visited(vertices, false);
-        cout << "bfs(" << vertex << "): ";
-        bfs(graph, vertex);
-
-        cout << "\n\n";
-    }
+    graph.bfs(vertex);
 
     return 0;
 }
 
-void bfs(Graph graph, int vertex) {
+Graph::Graph(int vertices) {
+    this->vertices = vertices;
+    this->adjacency_list.resize(vertices);
+}
+
+void Graph::add_edge(int u, int v) {
+    adjacency_list[u].push_back(v);
+}
+
+void Graph::print_graph() {
+    for (int i = 0; i < vertices; i++) {
+        cout << "(" << i << ") -> ";
+
+        for (int j : adjacency_list[i]) {
+            cout << j << " -> ";
+        }
+
+        cout << "_\n";
+    }
+    cout << "\n";
+}
+
+void Graph::bfs(int vertex) {
+
+    cout << "bfs(" << vertex << "): ";
+
     queue<int> q;
     q.push(vertex);
 
-    vector<bool> visited(graph.get_vertices(), false);
+    vector<bool> visited(vertices, false);
 
     while (!q.empty()) {
         int current = q.front();
@@ -37,7 +82,7 @@ void bfs(Graph graph, int vertex) {
             cout << current << " ";
             visited[current] = true;
         
-            vector<int> neighbours = graph.get_neighbours_of(current);
+            vector<int> neighbours = adjacency_list[current];
 
             for (int neighbour : neighbours) {
                 if (!visited[neighbour]) {
