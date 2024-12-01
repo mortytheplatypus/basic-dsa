@@ -8,7 +8,7 @@ int main() {
     char filename[] = "input.txt";
     
     Graph graph = create_new_graph(filename);
-    graph.printGraph();
+    graph.print_graph();
 
     int vertices = graph.get_vertices();
 

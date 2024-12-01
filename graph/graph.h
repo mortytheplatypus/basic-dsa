@@ -8,16 +8,18 @@ class Graph {
     vector<vector<int>> adjacency_list;
 
 public:
-    Graph();
+    Graph(int);
     Graph(int, int);
     int get_vertices();
     vector<int> get_neighbours_of(int);
-    void addEdge(int, int);
-    void printGraph();
+    void add_edge(int, int);
+    void print_graph();
 };
 
-Graph::Graph() {
-    // do nothing
+Graph::Graph(int vertices) {
+    this->vertices = vertices;
+    this->edges = 0;
+    this->adjacency_list.resize(vertices);
 }
 
 Graph::Graph(int vertices, int edges) {
@@ -34,11 +36,11 @@ vector<int> Graph::get_neighbours_of(int vertex) {
     return this->adjacency_list[vertex];
 }
 
-void Graph::addEdge(int source, int destination) {
+void Graph::add_edge(int source, int destination) {
     adjacency_list[source].push_back(destination);
 }
 
-void Graph::printGraph() {
+void Graph::print_graph() {
     for (int i = 0; i < vertices; i++) {
         cout << i << " -> ";
 
@@ -61,7 +63,7 @@ Graph create_new_graph(char* filename) {
 
     for (int i = 0; i < edges; i++) {
         cin >> source >> destination;
-        graph.addEdge(source, destination);
+        graph.add_edge(source, destination);
     }
 
     fclose(input);

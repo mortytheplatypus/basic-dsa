@@ -35,7 +35,8 @@ int get_max(int ara[], int n) {
 /*
     Radix sort using buckets (queues) and default radix 10
 */
-void radix_sort(int ara[], int n, int radix=10) {
+void radix_sort(int ara[], int n) {
+    int radix = 10;
     vector<queue<int>> buckets(radix);
 
     int max_element = get_max(ara, n);
@@ -94,7 +95,7 @@ void counting_sort(int ara[], int n, int place) {
     }
 }
 
-void radix_sort_using_counting_sort(int ara[], int n) {
+void radix_sort(int ara[], int n) {
     // find the maximum and he minimum element
     int max = get_max(ara, n);
 
